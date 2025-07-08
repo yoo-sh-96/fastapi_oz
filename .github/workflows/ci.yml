@@ -37,7 +37,7 @@ jobs:
       - name: Run Mypy
         run: poetry run mypy .
 
-  test:
+  test: # 전체 테스트 실행한다
     runs-on: ubuntu-22.04
     steps:
       - name: Check out the codes
