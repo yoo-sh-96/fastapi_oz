@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache@v2
         with:
           # 파이썬 버전이 바뀌었을 때, lock 파일이나 toml 파일이 바뀌었을때 종속성을 재설치합니다.
-          # 바뀐 것이 없는 경우에는 캐싱된 종속성을 사용합니다.
+          # 바뀐 것이 없는 경우에는 캐싱된 종속성을 사용합니다
           key: python-${{ steps.setup-python.outputs.python-version }}-poetry-lock-${{ hashFiles('poetry.lock') }}-toml-${{ hashFiles('pyproject.toml') }}-poetry-1.8.5
           path: /home/runner/.cache/pypoetry/virtualenvs/
 
