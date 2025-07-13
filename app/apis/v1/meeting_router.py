@@ -1,12 +1,17 @@
-
 from fastapi import APIRouter, HTTPException
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY
+from starlette.status import (
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+    HTTP_422_UNPROCESSABLE_ENTITY,
+)
 
 from app.dtos.create_meeting_response import CreateMeetingResponse
 from app.dtos.get_meeting_response import GetMeetingResponse
 from app.dtos.update_meeting_request import (
     MEETING_DATE_MAX_RANGE,
     UpdateMeetingDateRangeRequest,
+    UpdateMeetingLocationRequest,
+    UpdateMeetingTitleRequest,
 )
 from app.service.meeting_service_mysql import (
     service_create_meeting_mysql,
@@ -82,3 +87,25 @@ async def api_update_meeting_date_range_mysql(
         title=meeting_after_update.title,
         location=meeting_after_update.location,
     )
+
+
+@mysql_router.patch(
+    "/{meeting_url_code}/title",
+    description="meeting 의 title 을 설정합니다.",
+    status_code=HTTP_204_NO_CONTENT,
+)
+async def api_update_meeting_title_mysql(
+    meeting_url_code: str, update_meeting_title_request: UpdateMeetingTitleRequest
+) -> None:
+    return None
+
+
+@mysql_router.patch(
+    "/{meeting_url_code}/location",
+    description="meeting 의 location 을 설정합니다.",
+    status_code=HTTP_204_NO_CONTENT,
+)
+async def api_update_meeting_location_mysql(
+    meeting_url_code: str, update_meeting__location_request: UpdateMeetingLocationRequest
+) -> None:
+    return None
