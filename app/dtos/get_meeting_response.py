@@ -5,6 +5,19 @@ from pydantic import BaseModel
 from app.dtos.frozen_config import FROZEN_CONFIG
 
 
+class ParticipantDateResponse(BaseModel):
+    model_config = FROZEN_CONFIG
+    date: date
+    id: int
+
+
+class ParticipantResponse(BaseModel):
+    model_config = FROZEN_CONFIG
+    id: int
+    name: str
+    dates: list[ParticipantDateResponse]
+
+
 class GetMeetingResponse(BaseModel):
     model_config = FROZEN_CONFIG
 
@@ -13,3 +26,4 @@ class GetMeetingResponse(BaseModel):
     end_date: date | None = None
     title: str
     location: str
+    participants: list[ParticipantResponse]

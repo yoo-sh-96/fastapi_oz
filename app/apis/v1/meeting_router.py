@@ -55,6 +55,7 @@ async def api_get_meeting_mysql(meeting_url_code: str) -> GetMeetingResponse:
         start_date=meeting.start_date,
         title="",
         location="",
+        participants=[],
     )
 
 
@@ -88,6 +89,7 @@ async def api_update_meeting_date_range_mysql(
         end_date=meeting_after_update.end_date,
         title=meeting_after_update.title,
         location=meeting_after_update.location,
+        participants=[],
     )
 
 
