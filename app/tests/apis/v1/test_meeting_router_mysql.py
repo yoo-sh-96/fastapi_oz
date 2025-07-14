@@ -38,6 +38,24 @@ class TestMeetingRouter(TestCase):
             meeting_create_response = await client.post("/v1/mysql/meetings")  # 조회 전에 생성부터
             url_code = meeting_create_response.json()["url_code"]
 
+            await client.patch(
+                url=f"/v1/mysql/meetings/{url_code}/date_range",
+                json={
+                    "start_date": (start_date := "2025-12-01"),
+                    "end_date": (end_date := "2025-12-07"),
+                },
+            )
+
+            await client.post(
+                url="/v1/mysql/participants",
+                json={
+                    "name": (participant_name := "test_name"),
+                    "meeting_url_code": url_code,
+                },
+            )
+
+            await client.patch(f"/v1/mysql/meetings/{url_code}/title", json={"title": (title := "abc")})
+
             # When
             response = await client.get(f"v1/mysql/meetings/{url_code}")  # 여기가 조회
 
@@ -45,10 +63,25 @@ class TestMeetingRouter(TestCase):
         self.assertEqual(response.status_code, HTTP_200_OK)
         response_body = response.json()
         self.assertEqual(response_body["url_code"], url_code)
-        self.assertIsNone(response_body["start_date"])
-        self.assertIsNone(response_body["end_date"])
+        self.assertEqual(response_body["start_date"], start_date)
+        self.assertEqual(response_body["end_date"], end_date)
         self.assertEqual(response_body["location"], "")
-        self.assertEqual(response_body["title"], "")
+        self.assertEqual(response_body["title"], title)
+        self.assertEqual(len(response_body["participants"]), 1)
+        participant = response_body["participants"][0]
+        self.assertEqual(participant["name"], participant_name)
+        self.assertEqual(
+            [date["date"] for date in participant["dates"]],
+            [
+                "2025-12-01",
+                "2025-12-02",
+                "2025-12-03",
+                "2025-12-04",
+                "2025-12-05",
+                "2025-12-06",
+                "2025-12-07",
+            ],
+        )
 
     async def test_api_get_meeting_mysql_404(self) -> None:
         async with httpx.AsyncClient(

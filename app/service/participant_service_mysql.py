@@ -18,7 +18,7 @@ async def service_create_participant(
             name=create_participant_request.name,
             meeting_url_code=create_participant_request.meeting_url_code,
         )
-        await ParticipantDateModel.bulk_create_participant_date(
+        await ParticipantDateModel.bulk_create_participant_dates(
             participant_id=participant.id,
             dates=dates,
         )
