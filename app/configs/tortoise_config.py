@@ -6,6 +6,8 @@ from app.configs import config
 
 TORTOISE_APP_MODELS = [  # tortoise에 의해서 사용되는 ORM 모델들은 전부 한곳에 등록해줘야 함.
     "app.tortoise_models.meeting",
+    "app.tortoise_models.participant",
+    "app.tortoise_models.participant_date",
     "aerich.models",
 ]
 

@@ -3,8 +3,9 @@ from datetime import date
 import httpx
 from starlette.status import (
     HTTP_200_OK,
+    HTTP_204_NO_CONTENT,
     HTTP_404_NOT_FOUND,
-    HTTP_422_UNPROCESSABLE_ENTITY, HTTP_204_NO_CONTENT,
+    HTTP_422_UNPROCESSABLE_ENTITY,
 )
 from tortoise.contrib.test import TestCase
 
@@ -146,8 +147,6 @@ class TestMeetingRouter(TestCase):
         assert response.status_code == HTTP_404_NOT_FOUND
         response_body = response.json()
         assert response_body["detail"] == "meeting with url_code: invalid_url not found"
-
-
 
     async def test_api_update_meeting_title(self) -> None:
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
